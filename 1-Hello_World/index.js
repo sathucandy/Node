@@ -17,4 +17,8 @@ fs.readFile('./file.text', 'utf-8' ,(err, data) => {
     console.log(data)
 })
 
+fs.writeFile('./file.txt', 'This is what we are writing in the file asynchronously' ,'utf-8', (err) => {
+    console.log("files have been written");
+})
+
 console.log('Will read file');
