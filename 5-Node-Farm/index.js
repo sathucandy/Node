@@ -39,13 +39,16 @@ const replaceTemplate = (template, product) => {
 };
 
 const server = http.createServer((req, res) => {
-  //   console.log(req.url);
+  // console.log(req.url);
+  // console.log(url.parse(req.url, true)); // Here we are righting true to parse the query string as object.
+
+  const { query, pathname } = url.parse(req.url, true);
 
   // implementing routing
-  const pathName = req.url;
+  // const pathName = req.url;
 
   ////OVERVIEW PAGE////
-  if (pathName === "/" || pathName === "/overview") {
+  if (pathname === "/" || pathname === "/overview") {
     res.writeHead(200, { "Content-type": "text/html" });
     const cardsHtml = dataObject
       .map(element => {
@@ -57,11 +60,15 @@ const server = http.createServer((req, res) => {
     res.end(output);
   }
   //// PRODUCT PAGE ////
-  else if (pathName === "/product") {
-    res.end("This is the product");
+  else if (pathname === "/product") {
+    // console.log(query);
+    res.writeHead(200, { "Content-type": "text/html" });
+    const product = dataObject[query.id];
+    const output = replaceTemplate(tempProduct, product);
+    res.end(output);
   }
   /// API ////
-  else if (pathName === "/api") {
+  else if (pathname === "/api") {
     res.writeHead(200, { "Content-type": "application/json" });
     res.end(data);
   }
