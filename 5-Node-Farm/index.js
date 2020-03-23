@@ -1,14 +1,10 @@
 const url = require("url");
 const http = require("http");
 const fs = require("fs");
-const replaceTemplate = require("./modules/replaceTemplate");
 
-///  WE READ THE FILE HERE INSTEAD OF "/api" BECAUSE HERE WE ARE READING
-// THE FILE ONLY ONCE AND CAN CALL DATA AS MANY TIME AS THE API IS HIT
-// INSTEAD OF READING THE DATA EVERYTIME WHEN THE API IS HIT AND THEN DISPLAYING IT
-const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
-const dataObject = JSON.parse(data);
-// console.log(dataObject);
+const slugify = require("slugify");
+
+const replaceTemplate = require("./modules/replaceTemplate");
 
 const tempOverview = fs.readFileSync(
   `${__dirname}/templates/template-overview.html`,
@@ -22,6 +18,19 @@ const tempProduct = fs.readFileSync(
   `${__dirname}/templates/template-product.html`,
   "utf-8"
 );
+
+///  WE READ THE FILE HERE INSTEAD OF "/api" BECAUSE HERE WE ARE READING
+// THE FILE ONLY ONCE AND CAN CALL DATA AS MANY TIME AS THE API IS HIT
+// INSTEAD OF READING THE DATA EVERYTIME WHEN THE API IS HIT AND THEN DISPLAYING IT
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
+const dataObject = JSON.parse(data);
+// console.log(dataObject);
+// Implementing Slugify
+const slugs = dataObject.map(element => {
+  return slugify(element.productName, { lower: true });
+});
+
+console.log(slugs);
 
 const server = http.createServer((req, res) => {
   // console.log(req.url);
