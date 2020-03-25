@@ -1,6 +1,14 @@
 const EventEmitter = require("events");
 
-const myEmitter = new EventEmitter();
+// const myEmitter = new EventEmitter(); THIS IS THE CODE TO BE EXECUTED IF WE WERE NOT CREATING A NEW CLASS
+
+class Sales extends EventEmitter {
+  constructor() {
+    super();
+  }
+}
+
+const myEmitter = new Sales(); // CODE TO BE EXECUTED IF WE ARE CREATING A CLASS
 
 myEmitter.on("newSale", () => {
   console.log("There was a new sale");
