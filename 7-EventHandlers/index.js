@@ -1,4 +1,5 @@
 const EventEmitter = require("events");
+const http = require("http");
 
 // const myEmitter = new EventEmitter(); THIS IS THE CODE TO BE EXECUTED IF WE WERE NOT CREATING A NEW CLASS
 
@@ -23,3 +24,15 @@ myEmitter.on("newSale", stock => {
 });
 
 myEmitter.emit("newSale", 9);
+/////////////////////////////////////////////////////////////////////
+
+const server = http.createServer();
+
+server.on("request", (req, res) => {
+  console.log("Request recieved");
+  res.end("Request recieved");
+});
+
+server.on("close", () => {
+  console.log("server closed");
+});
