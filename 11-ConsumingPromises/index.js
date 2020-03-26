@@ -25,18 +25,23 @@ const writeFilePro = (file, data) => {
 
 // creating an async function
 const getDogPic = async () => {
-  const data = await readFilePro(`${__dirname}/dog.txt`);
-  console.log(`Breed: ${data}`);
+  // implementing try and catch to catch the error instead of .catch method earlier
+  try {
+    const data = await readFilePro(`${__dirname}/dog.txt`);
+    console.log(`Breed: ${data}`);
 
-  // getting the image
-  const res = await superagent.get(
-    `https://dog.ceo/api/breed/${data}/images/random`
-  );
-  console.log(res.body.message);
+    // getting the image
+    const res = await superagent.get(
+      `https://dog.ceo/api/breed/${data}/images/random`
+    );
+    console.log(res.body.message);
 
-  // write the file
-  writeFilePro("dog-image.txt", res.body.message);
-  console.log("Random dog image saved");
+    // write the file
+    writeFilePro("dog-image.txt", res.body.message);
+    console.log("Random dog image saved");
+  } catch (err) {
+    console.log(err.message);
+  }
 };
 
 getDogPic();
