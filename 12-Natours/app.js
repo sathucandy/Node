@@ -14,7 +14,7 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
-app.get("/api/v1/tours", (req, res) => {
+const getAllTours = (req, res) => {
   res.status(200).json({
     status: "success",
     results: tours.length,
@@ -22,11 +22,9 @@ app.get("/api/v1/tours", (req, res) => {
       tours
     }
   });
-});
+};
 
-// sending tours on basis of id
-// here "?" is for optional param
-app.get("/api/v1/tours/:id/:x?", (req, res) => {
+const getTour = (req, res) => {
   console.log(req.params);
   // here we are converting id to integer as it returns string
   // when we multiply a string by number it converts string to number
@@ -48,9 +46,9 @@ app.get("/api/v1/tours/:id/:x?", (req, res) => {
       tour
     }
   });
-});
+};
 
-app.post("/api/v1/tours", (req, res) => {
+const createTour = (req, res) => {
   // console.log(req.body);
   const newId = tours[tours.length - 1].id + 1;
   // here object.assign merge the two properties of the object
@@ -70,9 +68,9 @@ app.post("/api/v1/tours", (req, res) => {
     }
   );
   // res.send("done");
-});
+};
 
-app.patch("/api/v1/tours/:id", (req, res) => {
+const updateTour = (req, res) => {
   if (req.params.id * 1 > tours.length) {
     return res.status(404).json({
       status: "fail",
@@ -85,10 +83,9 @@ app.patch("/api/v1/tours/:id", (req, res) => {
       tour: "Updated Tour here"
     }
   });
-});
+};
 
-// deleting a tour
-app.delete("/api/v1/tours/:id", (req, res) => {
+const deleteTour = (req, res) => {
   if (req.params.id * 1 > tours.length) {
     return res.status(404).json({
       status: "fail",
@@ -99,7 +96,31 @@ app.delete("/api/v1/tours/:id", (req, res) => {
     status: "success",
     data: null
   });
-});
+};
+
+// getting all tours
+// {
+// app.get("/api/v1/tours", getAllTours);
+// app.post("/api/v1/tours", createTour);
+// }
+// sending tours on basis of id
+// here "?" is for optional param
+// {
+//   app.get("/api/v1/tours/:id/:x?", getTour);
+//   app.patch("/api/v1/tours/:id", updateTour);
+//   // deleting a tour
+//   app.delete("/api/v1/tours/:id", deleteTour);
+// }
+app
+  .route("/api/v1/tours")
+  .get(getAllTours)
+  .post(createTour);
+
+app
+  .route("/api/v1/tours/:id/:x?")
+  .get(getTour)
+  .patch(updateTour)
+  .delete(deleteTour);
 
 // creating a server in express
 const port = 3000;
