@@ -87,6 +87,20 @@ app.patch("/api/v1/tours/:id", (req, res) => {
   });
 });
 
+// deleting a tour
+app.delete("/api/v1/tours/:id", (req, res) => {
+  if (req.params.id * 1 > tours.length) {
+    return res.status(404).json({
+      status: "fail",
+      message: "Not found"
+    });
+  }
+  res.status(204).json({
+    status: "success",
+    data: null
+  });
+});
+
 // creating a server in express
 const port = 3000;
 app.listen(port, () => {
