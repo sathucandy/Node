@@ -1,8 +1,13 @@
 const fs = require("fs");
 const express = require("express");
+const morgan = require("morgan");
 
 // adding bunch of methods of express to app variable
 const app = express();
+
+// 1) MIDDLE WEARS
+
+app.use(morgan("dev"));
 
 // implementing middleware
 app.use(express.json());
@@ -21,6 +26,8 @@ app.use((req, res, next) => {
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
+
+//2) ROUTE HANDLERS
 
 const getAllTours = (req, res) => {
   // calling the middlewear
@@ -122,6 +129,7 @@ const deleteTour = (req, res) => {
 //   // deleting a tour
 //   app.delete("/api/v1/tours/:id", deleteTour);
 // }
+// 3) ROUTES
 app
   .route("/api/v1/tours")
   .get(getAllTours)
@@ -133,7 +141,7 @@ app
   .patch(updateTour)
   .delete(deleteTour);
 
-// creating a server in express
+// 4) creating a server in express
 const port = 3000;
 app.listen(port, () => {
   console.log(`App running on port ${port}....`);
