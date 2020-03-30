@@ -9,6 +9,9 @@ const app = express();
 
 app.use(morgan("dev"));
 
+const tourRouter = require("./routes/tourRoutes");
+const userRouter = require("./routes/userRoutes");
+
 // implementing middleware
 app.use(express.json());
 app.use((req, res, next) => {
@@ -23,181 +26,15 @@ app.use((req, res, next) => {
 // reading the json file data for getting tours
 // JSON.parse converts the jason data into javascript
 // object or an array of javascript object
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
-);
 
 //2) ROUTE HANDLERS
 
-const getAllTours = (req, res) => {
-  // calling the middlewear
-  console.log(req.requestTime);
-  res.status(200).json({
-    status: "success",
-    requestedAt: req.requestTime,
-    results: tours.length,
-    data: {
-      tours
-    }
-  });
-};
-
-const getTour = (req, res) => {
-  console.log(req.params);
-  // here we are converting id to integer as it returns string
-  // when we multiply a string by number it converts string to number
-  const id = req.params.id * 1;
-  const tour = tours.find(el => {
-    return el.id === id;
-  });
-  // if (id > tours.length)
-  if (!tour) {
-    return res.status(404).json({
-      status: "fail",
-      message: "Invalid id"
-    });
-  }
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      tour
-    }
-  });
-};
-
-const createTour = (req, res) => {
-  // console.log(req.body);
-  const newId = tours[tours.length - 1].id + 1;
-  // here object.assign merge the two properties of the object
-  const newTour = Object.assign({ id: newId }, req.body);
-  // adding the new tour to the last of the array
-  tours.push(newTour);
-  fs.writeFile(
-    `${__dirname}/dev-data/data/tours-simple.json`,
-    JSON.stringify(tours),
-    err => {
-      res.status(201).json({
-        status: "success",
-        data: {
-          tour: newTour
-        }
-      });
-    }
-  );
-  // res.send("done");
-};
-
-const updateTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({
-      status: "fail",
-      message: "Not found"
-    });
-  }
-  res.status(200).json({
-    status: "success",
-    data: {
-      tour: "Updated Tour here"
-    }
-  });
-};
-
-const deleteTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({
-      status: "fail",
-      message: "Not found"
-    });
-  }
-  res.status(204).json({
-    status: "success",
-    data: null
-  });
-};
-
-const getAllUsers = (req, res) => {
-  res.status(500).json({
-    status: "error",
-    message: "This route is not yes defined"
-  });
-};
-
-const getUser = (req, res) => {
-  res.status(500).json({
-    status: "error",
-    message: "This route is not yes defined"
-  });
-};
-
-const createUser = (req, res) => {
-  res.status(500).json({
-    status: "error",
-    message: "This route is not yes defined"
-  });
-};
-
-const updateUser = (req, res) => {
-  res.status(500).json({
-    status: "error",
-    message: "This route is not yes defined"
-  });
-};
-
-const deleteUser = (req, res) => {
-  res.status(500).json({
-    status: "error",
-    message: "This route is not yes defined"
-  });
-};
-
-// getting all tours
-// {
-// app.get("/api/v1/tours", getAllTours);
-// app.post("/api/v1/tours", createTour);
-// }
-// sending tours on basis of id
-// here "?" is for optional param
-// {
-//   app.get("/api/v1/tours/:id/:x?", getTour);
-//   app.patch("/api/v1/tours/:id", updateTour);
-//   // deleting a tour
-//   app.delete("/api/v1/tours/:id", deleteTour);
-// }
 // 3) ROUTES
-const tourRouter = express.Router();
-const userRouter = express.Router();
-
-tourRouter
-  .route("/")
-  .get(getAllTours)
-  .post(createTour);
-
-tourRouter
-  .route("/:id/:x?")
-  .get(getTour)
-  .patch(updateTour)
-  .delete(deleteTour);
-
-userRouter
-  .route("/")
-  .get(getAllUsers)
-  .post(createUser);
-
-userRouter
-  .route("/:id")
-  .get(getUser)
-  .patch(updateUser)
-  .delete(deleteUser);
-
 app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
 
 // 4) creating a server in express
-const port = 3000;
-app.listen(port, () => {
-  console.log(`App running on port ${port}....`);
-});
+module.exports = app;
 
 // defining route
 // app.get("/", (req, res) => {
