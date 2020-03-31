@@ -15,6 +15,15 @@ exports.checkId = (req, res, next, value) => {
   next();
 };
 
+exports.checkBody = (req, res, next) => {
+  if (!req.body.name || !req.body.price) {
+    return res.status(400).json({
+      status: "fail",
+      message: "missing name or price"
+    });
+  }
+};
+
 // to make these functions available to other modules we will replace const with export
 
 exports.getAllTours = (req, res) => {
