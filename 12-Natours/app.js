@@ -12,6 +12,9 @@ app.use(morgan("dev"));
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
 
+// serving static files
+app.use(express.static(`${__dirname}/public`));
+
 // implementing middleware
 app.use(express.json());
 app.use((req, res, next) => {
