@@ -2,8 +2,8 @@ const express = require("express");
 const tourController = require("./../controllers/tourController");
 const router = express.Router();
 
-// creating param wear
-router.param("id", tourController.checkId);
+// // creating param wear
+// router.param("id", tourController.checkId);
 
 // create a checkbody middlewear function
 // Check if body contains the name and price property

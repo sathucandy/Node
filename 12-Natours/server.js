@@ -22,39 +22,20 @@ mongoose
     console.log("DB connections successful");
   });
 
-// creating a schema using mongoose
-const tourSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "A Tour must have a name"],
-    unique: true,
-  },
-  rating: {
-    type: Number,
-    default: 4.5,
-  },
-  price: {
-    type: Number,
-    required: [true, "A tour must have a price"],
-  },
-});
-
-// creating a model out of schema
-const Tour = mongoose.model("Tour", tourSchema); // first param is name of the model and second param is name of the schema
 // creating the documents
-const testTour = new Tour({
-  name: "The Park Camper",
-  // rating: 4.7,
-  price: 997,
-});
-testTour
-  .save()
-  .then((doc) => {
-    console.log(doc);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// const testTour = new Tour({
+//   name: "The Park Camper",
+//   // rating: 4.7,
+//   price: 997,
+// });
+// testTour
+//   .save()
+//   .then((doc) => {
+//     console.log(doc);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
 // console.log(process.env);
 // 4) creating a server in express
