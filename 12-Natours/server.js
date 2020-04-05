@@ -41,6 +41,20 @@ const tourSchema = new mongoose.Schema({
 
 // creating a model out of schema
 const Tour = mongoose.model("Tour", tourSchema); // first param is name of the model and second param is name of the schema
+// creating the documents
+const testTour = new Tour({
+  name: "The Park Camper",
+  // rating: 4.7,
+  price: 997,
+});
+testTour
+  .save()
+  .then((doc) => {
+    console.log(doc);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // console.log(process.env);
 // 4) creating a server in express
