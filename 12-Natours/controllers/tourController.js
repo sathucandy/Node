@@ -17,8 +17,30 @@ exports.checkBody = (req, res, next) => {
 
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
-    console.log(req.requestTime);
+    console.log(req.query);
+    // Build the query
+    // 1) Filtering
+    const queryObj = { ...req.query }; // here this syntax is defining a new object which is a copy of req.query otherwise the object would have been referred
+    const excludedFields = ["page", "sort", "limit", "fields"];
+    excludedFields.forEach((el) => {
+      delete queryObj[el];
+    });
+    // 2) Advanced Filtering
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    console.log(JSON.parse(queryStr));
+    const query = Tour.find(JSON.parse(queryStr));
+
+    // {difficulty:"easy",duration:{$gte: 5}}
+    // const query =  Tour.find()
+    //   .where("duration")
+    //   .equals(5)
+    //   .where("difficulty")
+    //   .equals("easy");
+    // console.log(req.requestTime);
+    // Execute the query
+    const tours = await query;
+    // SEND RESPONSE
     res.status(200).json({
       status: "success",
       requestedAt: req.requestTime,

@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv"); // this is to read config.env file
+dotenv.config({ path: "./config.env" }); // this is to read config.env file
+
 const app = require("./app");
 console.log(app.get("env"));
-
-dotenv.config({ path: "./config.env" }); // this is to read config.env file
 
 // connecting to mongoose
 const DB = process.env.DATABASE.replace(
