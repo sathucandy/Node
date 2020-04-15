@@ -55,6 +55,10 @@ const tourSchema = new mongoose.Schema(
       select: false,
     },
     startDates: [Date],
+    secretTour: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     toJSON: { virtuals: true },
@@ -82,6 +86,27 @@ tourSchema.pre("save", function (next) {
 //   console.log(doc);
 //   next();
 // })
+
+// QUERY MIDDLEWEAR
+tourSchema.pre(/^find/, function (next) {
+  // tourSchema.pre("find", function (next) {
+  this.find({ secretTour: { $ne: true } });
+  this.start = Date.now();
+  next();
+});
+
+tourSchema.post(/^find/, function (docs, next) {
+  console.log(`Querry took ${Date.now() - this.start} milleseconds`);
+  // console.log(doc);
+  next();
+});
+
+// AGGREGATION MIDDLEWEAR
+tourSchema.pre("aggregate", function (next) {
+  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+  console.log(this.pipeline());
+  next();
+});
 
 // creating a model out of schema
 const Tour = mongoose.model("Tour", tourSchema); // first param is name of the model and second param is name of the schema
