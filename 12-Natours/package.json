@@ -16,7 +16,7 @@
     "morgan": "^1.10.0",
     "prettier": "^2.0.2",
     "slugify": "^1.4.0",
-    "validator": "^13.0.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "eslint-config-airbnb": "^18.1.0",
